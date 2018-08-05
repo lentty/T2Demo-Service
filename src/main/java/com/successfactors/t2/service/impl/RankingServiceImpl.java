@@ -1,7 +1,7 @@
 package com.successfactors.t2.service.impl;
 
 import com.successfactors.t2.dao.PointsDAO;
-import com.successfactors.t2.domain.Points;
+import com.successfactors.t2.domain.RankingItem;
 import com.successfactors.t2.service.RankingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ public class RankingServiceImpl implements RankingService{
     private PointsDAO pointsDAO;
 
     @Override
-    public List<Points> getRankingListByPeriod(String beginDate, String endDate){
+    public List<RankingItem> getRankingListByPeriod(String beginDate, String endDate){
          return pointsDAO.getUserRankingList(beginDate, endDate);
     }
 }

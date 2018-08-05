@@ -1,12 +1,11 @@
 package com.successfactors.t2.service;
 
-import com.successfactors.t2.domain.Points;
+import com.successfactors.t2.domain.RankingItem;
 
-import java.util.Date;
 import java.util.List;
 
 public interface RankingService {
 
-    List<Points> getRankingListByPeriod(String beginDate, String endDate);
+    List<RankingItem> getRankingListByPeriod(String beginDate, String endDate);
 
 }

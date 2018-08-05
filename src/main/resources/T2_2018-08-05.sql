@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.11)
 # Database: T2
-# Generation Time: 2018-07-31 15:32:46 +0000
+# Generation Time: 2018-08-05 09:17:37 +0000
 # ************************************************************
 
 
@@ -74,6 +74,31 @@ VALUES
 	('Vicky',4,5);
 
 /*!40000 ALTER TABLE `points` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table user
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `user`;
+
+CREATE TABLE `user` (
+  `id` varchar(255) NOT NULL DEFAULT '',
+  `nickname` varchar(255) NOT NULL DEFAULT '',
+  `gender` smallint(2) NOT NULL,
+  `avatarUrl` varchar(255) DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+
+INSERT INTO `user` (`id`, `nickname`, `gender`, `avatarUrl`)
+VALUES
+	('Shawn','Shawn',1,''),
+	('Vicky','Vicky',2,'');
+
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
