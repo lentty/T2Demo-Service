@@ -1,6 +1,6 @@
 package com.successfactors.t2.domain;
 
-public class UserInfo {
+public class User {
     private String id;
     private String nickName;
     private Integer gender;
