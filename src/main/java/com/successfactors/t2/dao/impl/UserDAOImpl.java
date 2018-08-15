@@ -26,8 +26,8 @@ public class UserDAOImpl implements UserDAO {
             }
         });
         if (userCnt == 0) {
-            return jdbcTemplate.update("insert into user(id, nickname, gender, avatarUrl) values (?, ?, ?, ?)",
-                    new Object[]{id, user.getNickName(), user.getGender(), user.getAvatarUrl()});
+            return jdbcTemplate.update("insert into user(id, nickname, gender, avatarUrl, status) values (?, ?, ?, ?, ?)",
+                    new Object[]{id, user.getNickName(), user.getGender(), user.getAvatarUrl(), 1});
         } else if (userCnt == 1) {
             return jdbcTemplate.update("update user set nickname = ?, gender = ?, avatarUrl = ? where id = ?",
                     new Object[]{user.getNickName(), user.getGender(), user.getAvatarUrl(), id});

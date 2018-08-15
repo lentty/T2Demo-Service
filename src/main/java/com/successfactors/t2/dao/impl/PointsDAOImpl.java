@@ -19,10 +19,9 @@ public class PointsDAOImpl implements PointsDAO{
 
     @Override
     public List<RankingItem> getUserRankingList(String beginDate, String endDate){
-        String query = "select u.id, u.nickname, u.avatarUrl, sum(p.points) as total_points from points p, event e, user u where " +
-                "p.event_id = e.id and p.userid = u.id and e.event_date >= ? and e.event_date <= ? group by p.userid order by total_points desc";
+        String query = "select u.id, u.nickname, u.avatarUrl, initial as total_points from user u where u.status = 1 order by total_points desc";
 
-        return jdbcTemplate.query(query, new Object[]{beginDate, endDate}, new RowMapper<RankingItem>() {
+        return jdbcTemplate.query(query, new RowMapper<RankingItem>() {
             @Override
             public RankingItem mapRow(ResultSet resultSet, int i) throws SQLException {
                 RankingItem rankingItem = new RankingItem();
