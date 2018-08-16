@@ -7,7 +7,12 @@ public class Session {
     private String avatarUrl;
     private String department;
     private String sessionDate;
-    private boolean isNext;
+    /**
+     * 1 means shared
+     * 2 means the next one
+     * 3 means haven't shared
+     */
+    private int status;
 
     public Integer getSessionId() {
         return sessionId;
@@ -57,11 +62,11 @@ public class Session {
         this.sessionDate = sessionDate;
     }
 
-    public boolean isNext() {
-        return isNext;
+    public int getStatus() {
+        return status;
     }
 
-    public void setNext(boolean next) {
-        isNext = next;
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

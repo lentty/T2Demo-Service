@@ -1,10 +1,7 @@
 package com.successfactors.t2.controller;
 
-import com.successfactors.t2.domain.RankingItem;
 import com.successfactors.t2.domain.Session;
-import com.successfactors.t2.service.RankingService;
 import com.successfactors.t2.service.SessionService;
-import com.successfactors.t2.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
