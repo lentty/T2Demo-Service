@@ -25,6 +25,7 @@ public class PointsDAOImpl implements PointsDAO{
             @Override
             public RankingItem mapRow(ResultSet resultSet, int i) throws SQLException {
                 RankingItem rankingItem = new RankingItem();
+                rankingItem.setRank(i+1);
                 rankingItem.setUserId(resultSet.getString("id"));
                 rankingItem.setNickname(resultSet.getString("nickname"));
                 rankingItem.setAvatarUrl(resultSet.getString("avatarUrl"));

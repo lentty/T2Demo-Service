@@ -1,18 +1,18 @@
 package com.successfactors.t2.domain;
 
 public class RankingItem {
+    private int rank;
     private String userId;
     private String nickname;
     private String avatarUrl;
     private Integer points;
-    public RankingItem(){
+
+    public int getRank() {
+        return rank;
     }
 
-    public RankingItem(String userId, String nickname, String avatarUrl, Integer points){
-        this.userId = userId;
-        this.nickname = nickname;
-        this.avatarUrl = avatarUrl;
-        this.points = points;
+    public void setRank(int rank) {
+        this.rank = rank;
     }
 
     public String getUserId() {

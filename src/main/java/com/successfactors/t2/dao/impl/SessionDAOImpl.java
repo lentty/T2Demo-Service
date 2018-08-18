@@ -35,4 +35,23 @@ public class SessionDAOImpl implements SessionDAO{
             }
         });
     }
+
+    @Override
+    public Session getSessionByDate(String date){
+       String query = "select owner, date from session where date = ?";
+       List<Session> sessions = jdbcTemplate.query(query, new Object[]{date}, new RowMapper(){
+           @Override
+           public Session mapRow(ResultSet resultSet, int i) throws SQLException {
+              Session session = new Session();
+              session.setOwner(resultSet.getString("owner"));
+              session.setSessionDate(resultSet.getString("date"));
+              return session;
+           }
+       });
+       if (sessions != null && !sessions.isEmpty()){
+           return sessions.get(0);
+       }else {
+           return null;
+       }
+    }
 }

@@ -36,4 +36,9 @@ public class SessionServiceImpl implements SessionService {
         }
         return sessionList;
     }
+
+    @Override
+    public Session getSessionByDate(String date){
+        return sessionDAO.getSessionByDate(date);
+    }
 }

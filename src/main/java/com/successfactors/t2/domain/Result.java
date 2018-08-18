@@ -13,6 +13,12 @@ public class Result {
         this.msg = msg;
     }
 
+    public Result(int status, String msg, Object retObj){
+        this.status = status;
+        this.msg = msg;
+        this.retObj = retObj;
+    }
+
     public int getStatus() {
         return status;
     }
