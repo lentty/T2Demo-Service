@@ -38,13 +38,15 @@ public class SessionDAOImpl implements SessionDAO{
 
     @Override
     public Session getSessionByDate(String date){
-       String query = "select owner, date from session where date = ?";
+       String query = "select id, owner, date, checkin_code from session where date = ?";
        List<Session> sessions = jdbcTemplate.query(query, new Object[]{date}, new RowMapper(){
            @Override
            public Session mapRow(ResultSet resultSet, int i) throws SQLException {
               Session session = new Session();
+              session.setSessionId(resultSet.getInt("id"));
               session.setOwner(resultSet.getString("owner"));
               session.setSessionDate(resultSet.getString("date"));
+              session.setCheckinCode(resultSet.getString("checkin_code"));
               return session;
            }
        });
@@ -53,5 +55,10 @@ public class SessionDAOImpl implements SessionDAO{
        }else {
            return null;
        }
+    }
+
+    @Override
+    public int updateCheckinCode(Integer sessionId, String checkinCode) {
+        return jdbcTemplate.update("update session set checkin_code = ? where id = ?", new Object[]{checkinCode, sessionId});
     }
 }

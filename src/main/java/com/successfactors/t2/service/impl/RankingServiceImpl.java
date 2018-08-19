@@ -17,4 +17,14 @@ public class RankingServiceImpl implements RankingService{
     public List<RankingItem> getRankingListByPeriod(String beginDate, String endDate){
          return pointsDAO.getUserRankingList(beginDate, endDate);
     }
+
+    @Override
+    public int updatePointsForHost(Integer sessionId, String userId) {
+        return pointsDAO.updatePointsForHost(sessionId, userId);
+    }
+
+    @Override
+    public int updatePointsForCheckin(Integer sessionId, String userId) {
+        return pointsDAO.updatePointsForCheckin(sessionId, userId);
+    }
 }

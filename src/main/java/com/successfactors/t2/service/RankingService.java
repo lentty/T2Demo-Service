@@ -7,5 +7,7 @@ import java.util.List;
 public interface RankingService {
 
     List<RankingItem> getRankingListByPeriod(String beginDate, String endDate);
+    int updatePointsForHost(Integer sessionId, String userId);
+    int updatePointsForCheckin(Integer sessionId, String userId);
 
 }

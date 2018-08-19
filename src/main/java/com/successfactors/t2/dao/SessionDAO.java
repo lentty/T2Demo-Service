@@ -8,4 +8,6 @@ public interface SessionDAO {
     List<Session> getSessionList();
 
     Session getSessionByDate(String dates);
+
+    int updateCheckinCode(Integer sessionId, String checkinCode);
 }

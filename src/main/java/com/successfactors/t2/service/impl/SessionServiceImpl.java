@@ -41,4 +41,9 @@ public class SessionServiceImpl implements SessionService {
     public Session getSessionByDate(String date){
         return sessionDAO.getSessionByDate(date);
     }
+
+    @Override
+    public int updateCheckinCode(Integer sessionId, String checkinCode) {
+        return sessionDAO.updateCheckinCode(sessionId, checkinCode);
+    }
 }

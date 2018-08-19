@@ -13,6 +13,7 @@ public class Session {
      * 3 means haven't shared
      */
     private int status;
+    private String checkinCode;
 
     public Integer getSessionId() {
         return sessionId;
@@ -68,5 +69,13 @@ public class Session {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getCheckinCode() {
+        return checkinCode;
+    }
+
+    public void setCheckinCode(String checkinCode) {
+        this.checkinCode = checkinCode;
     }
 }
