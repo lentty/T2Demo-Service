@@ -44,14 +44,12 @@ public class UserController {
 
     @RequestMapping(value = "/checkinCode/{userId}", method = RequestMethod.GET)
     public Result generateCheckinCode(@PathVariable("userId") String userId) {
-        if(userId != null){
+        if (userId != null) {
             Session session = sessionService.getSessionByDate(DateUtil.formatDate());
             if (session != null && userId.equals(session.getOwner())) {
-                String code = checkinService.getCheckinCode();
+                String code = checkinService.generateCheckinCode(session.getSessionId(), userId);
                 if (code != null) {
-                    int status = sessionService.updateCheckinCode(session.getSessionId(), code);
-                    status += rankingService.updatePointsForHost(session.getSessionId(), userId);
-                    return new Result(status, "ok", code);
+                    return new Result(1, "ok", code);
                 } else {
                     return new Result(0, "no_code", null);
                 }
