@@ -39,17 +39,7 @@ public class SessionDAOImpl implements SessionDAO{
     @Override
     public Session getSessionByDate(String date){
        String query = "select id, owner, date, checkin_code from session where date = ?";
-       List<Session> sessions = jdbcTemplate.query(query, new Object[]{date}, new RowMapper(){
-           @Override
-           public Session mapRow(ResultSet resultSet, int i) throws SQLException {
-              Session session = new Session();
-              session.setSessionId(resultSet.getInt("id"));
-              session.setOwner(resultSet.getString("owner"));
-              session.setSessionDate(resultSet.getString("date"));
-              session.setCheckinCode(resultSet.getString("checkin_code"));
-              return session;
-           }
-       });
+       List<Session> sessions = jdbcTemplate.query(query, new Object[]{date}, new SessionRowMapper());
        if (sessions != null && !sessions.isEmpty()){
            return sessions.get(0);
        }else {
@@ -58,7 +48,30 @@ public class SessionDAOImpl implements SessionDAO{
     }
 
     @Override
+    public Session getSessionByOwner(String userId){
+        String query = "select id, owner, date, checkin_code from session where season = 'S1' and owner = ?";
+        List<Session> sessions = jdbcTemplate.query(query, new Object[]{userId}, new SessionRowMapper());
+        if (sessions != null && !sessions.isEmpty()){
+            return sessions.get(0);
+        }else {
+            return null;
+        }
+    }
+
+    @Override
     public int updateCheckinCode(Integer sessionId, String checkinCode) {
         return jdbcTemplate.update("update session set checkin_code = ? where id = ?", new Object[]{checkinCode, sessionId});
+    }
+
+    class SessionRowMapper implements RowMapper<Session> {
+        @Override
+        public Session mapRow(ResultSet resultSet, int i) throws SQLException {
+            Session session = new Session();
+            session.setSessionId(resultSet.getInt("id"));
+            session.setOwner(resultSet.getString("owner"));
+            session.setSessionDate(resultSet.getString("date"));
+            session.setCheckinCode(resultSet.getString("checkin_code"));
+            return session;
+        }
     }
 }

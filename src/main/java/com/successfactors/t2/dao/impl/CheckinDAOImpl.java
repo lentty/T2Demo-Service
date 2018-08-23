@@ -1,7 +1,6 @@
 package com.successfactors.t2.dao.impl;
 
 import com.successfactors.t2.dao.CheckinDAO;
-import com.successfactors.t2.utils.CheckinCodeFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -29,9 +28,6 @@ public class CheckinDAOImpl implements CheckinDAO {
                 return code;
             }
         });
-        if(CheckinCodeFactory.codeMap.isEmpty()){
-            CheckinCodeFactory.codeMap.putAll(result);
-        }
         return result;
     }
 }

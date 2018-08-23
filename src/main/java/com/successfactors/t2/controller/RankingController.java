@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -19,7 +20,7 @@ public class RankingController {
     @RequestMapping(value="/list", method = RequestMethod.GET)
     public List<RankingItem> getRankingList(){
         String beginDate = "2018-07-31";
-        String endDate = DateUtil.formatDate();
+        String endDate = DateUtil.formatDate(new Date());
         return rankingService.getRankingListByPeriod(beginDate, endDate);
     }
 }
