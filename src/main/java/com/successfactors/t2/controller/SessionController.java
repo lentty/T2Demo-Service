@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/session")
@@ -21,7 +22,6 @@ public class SessionController {
     }
 
     @RequestMapping(value = "/{date}", method = RequestMethod.GET)
-    @ResponseBody
     public Result getSessionByDate(@PathVariable("date") String date){
         Session session = sessionService.getSessionByDate(date);
         if(session == null){
@@ -30,4 +30,11 @@ public class SessionController {
             return new Result(0, "ok", session);
         }
     }
+
+    @RequestMapping(value = "/usercount", method = RequestMethod.GET)
+    public Result getNumOfAttendee(){
+        Set<String> userList = sessionService.getAttendeeList();
+        return new Result(0, "ok", userList == null ? 0 : userList.size());
+    }
+
 }

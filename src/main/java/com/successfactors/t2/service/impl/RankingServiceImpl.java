@@ -27,4 +27,9 @@ public class RankingServiceImpl implements RankingService{
     public int updatePointsForCheckin(Integer sessionId, String userId) {
         return pointsDAO.updatePointsForCheckin(sessionId, userId);
     }
+
+    @Override
+    public int updatePointsForLottery(Integer sessionId, Integer luckyNumber) {
+        return pointsDAO.updatePointsForLottery(sessionId, luckyNumber);
+    }
 }

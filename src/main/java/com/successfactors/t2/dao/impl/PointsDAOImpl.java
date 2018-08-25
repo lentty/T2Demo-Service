@@ -2,7 +2,6 @@ package com.successfactors.t2.dao.impl;
 
 import com.successfactors.t2.dao.PointsDAO;
 import com.successfactors.t2.domain.RankingItem;
-import com.successfactors.t2.domain.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -63,6 +62,14 @@ public class PointsDAOImpl implements PointsDAO{
             return jdbcTemplate.update("update points set checkin = 1 where user_id = ? and session_id = ? ",
                     new Object[]{userId, sessionId});
         }
+    }
+
+    @Override
+    public int updatePointsForLottery(Integer sessionId, Integer luckyNumber) {
+        jdbcTemplate.update("update points set lottery = 0 where session_id = ? and bet_number != ?",
+                new Object[]{sessionId, luckyNumber});
+        return jdbcTemplate.update("update points set lottery = 5 where session_id = ? and bet_number = ?",
+                new Object[]{sessionId, luckyNumber});
     }
 
     private int getSessionCount(Integer sessionId, String userId){

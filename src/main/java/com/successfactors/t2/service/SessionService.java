@@ -4,6 +4,7 @@ import com.successfactors.t2.domain.Session;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface SessionService {
     List<Session> getSessionList();
@@ -11,4 +12,6 @@ public interface SessionService {
     Session getSessionByOwner(String owner);
     int updateCheckinCode(Integer sessionId, String checkinCode);
     boolean isSessionOwnerOfToday(String userId);
+    Set<String> getAttendeeList();
+    int updateLuckyNumber(Integer sessionId, Integer luckyNumber);
 }
