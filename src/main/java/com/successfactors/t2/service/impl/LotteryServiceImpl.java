@@ -1,6 +1,7 @@
 package com.successfactors.t2.service.impl;
 
 import com.successfactors.t2.dao.LotteryDAO;
+import com.successfactors.t2.domain.LotteryResult;
 import com.successfactors.t2.service.LotteryService;
 import com.successfactors.t2.service.RankingService;
 import com.successfactors.t2.service.SessionService;
@@ -10,7 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -35,14 +39,23 @@ public class LotteryServiceImpl implements LotteryService{
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public int draw(String userId, Integer sessionId) {
+    public LotteryResult draw(String userId, Integer sessionId) {
         int number = getLuckyNumber();
         logger.info("Lucky number is: " + number);
         if (number > 0) {
-            sessionService.updateLuckyNumber(sessionId, number);
-            rankingService.updatePointsForLottery(sessionId, number);
+            List<String> luckyDogs = lotteryDAO.getLuckyDogs(sessionId, number);
+            if(!StringUtils.isEmpty(luckyDogs)){
+                sessionService.updateLuckyNumber(sessionId, number);
+                rankingService.updatePointsForLottery(sessionId, number);
+            }
+            return new LotteryResult(number, luckyDogs);
         }
-        return number;
+        return new LotteryResult(number, new ArrayList<>());
+    }
+
+    @Override
+    public LotteryResult query() {
+        return lotteryDAO.query();
     }
 
     private int getLuckyNumber(){

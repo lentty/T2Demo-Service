@@ -61,21 +61,4 @@ public class LotteryController {
         }
     }
 
-    @RequestMapping(value = "/draw/{userId}", method = RequestMethod.GET)
-    public Result draw(@PathVariable("userId") String userId) {
-        if (StringUtils.isEmpty(userId)) {
-            return new Result(-1, "illegal_argument");
-        }
-        Session session = sessionService.getSessionByOwner(userId);
-        String today = DateUtil.formatDate(new Date());
-        if (session != null && today.equals(session.getSessionDate())) {
-            int luckyNumber = lotteryService.draw(userId, session.getSessionId());
-            if (luckyNumber > 0) {
-                return new Result(0, "ok", luckyNumber);
-            } else {
-                return new Result(-1, "error");
-            }
-        }
-        return new Result(-1, "not_authorized");
-    }
 }
