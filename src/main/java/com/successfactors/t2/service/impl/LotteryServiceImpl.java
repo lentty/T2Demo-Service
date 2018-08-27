@@ -63,7 +63,13 @@ public class LotteryServiceImpl implements LotteryService{
         if(userList != null && userList.size() > 0){
             int size = userList.size();
             Random random = new Random();
-            return random.nextInt(size) + 1;
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < size; i++) {
+                int number = Math.abs(random.nextInt() % size) + 1;
+                sb.append(number).append(",");
+            }
+            logger.info("numbers : " + sb.toString());
+            return Math.abs(random.nextInt() % size) + 1;
         }
         return 0;
     }
