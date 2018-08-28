@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Date;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/checkin")
@@ -57,6 +58,10 @@ public class CheckinController {
         if (!StringUtils.isEmpty(code) && !StringUtils.isEmpty(userId)) {
             code = URLDecoder.decode(code, "UTF-8");
             logger.info("Code after decode: "+code);
+            Set<String> userList = sessionService.getAttendeeList();
+            if(userList != null && userList.contains(userId)){
+                return new Result(0, "checked_in", true);
+            }
             Session session = sessionService.getSessionByOwner(userId);
             String today = DateUtil.formatDate(new Date());
             if (session != null && today.equals(session.getSessionDate())) {
@@ -82,6 +87,10 @@ public class CheckinController {
         }
         code = URLDecoder.decode(code, "UTF-8");
         logger.info("Code after decode: "+code);
+        Set<String> userList = sessionService.getAttendeeList();
+        if(userList != null && userList.contains(userId)){
+            return new Result(0, "checked_in", true);
+        }
         Session session = sessionService.getSessionByDate(DateUtil.formatDate(new Date()));
         if (session != null && !userId.equals(session.getOwner())) {
             if (code.equalsIgnoreCase(session.getCheckinCode())) {
