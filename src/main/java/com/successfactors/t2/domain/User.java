@@ -5,6 +5,10 @@ public class User {
     private String nickName;
     private Integer gender;
     private String avatarUrl;
+    /**
+     * 0 means normal user, 1 means attendee
+     */
+    private int status;
 
     public String getId() {
         return id;
@@ -36,5 +40,13 @@ public class User {
 
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }
