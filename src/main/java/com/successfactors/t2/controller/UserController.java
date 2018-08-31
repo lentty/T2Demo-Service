@@ -3,6 +3,7 @@ package com.successfactors.t2.controller;
 import com.successfactors.t2.domain.Result;
 import com.successfactors.t2.domain.User;
 import com.successfactors.t2.service.UserService;
+import com.successfactors.t2.utils.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,6 @@ public class UserController {
             return new Result(-1, errorMsg);
         }
         int status = userService.addUser(user);
-        return new Result(0, "ok", status);
+        return new Result(0, Constants.SUCCESS, status);
     }
 }

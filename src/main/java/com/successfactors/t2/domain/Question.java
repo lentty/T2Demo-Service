@@ -11,6 +11,10 @@ public class Question {
      */
     private Integer type;
     private String content;
+    /**
+     * 0 means draft, 1 means published
+     */
+    private Integer status;
     private List<Option> options;
 
     public Integer getId() {
@@ -59,5 +63,13 @@ public class Question {
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

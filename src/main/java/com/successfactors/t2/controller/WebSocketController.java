@@ -5,6 +5,7 @@ import com.successfactors.t2.domain.Result;
 import com.successfactors.t2.domain.Session;
 import com.successfactors.t2.service.LotteryService;
 import com.successfactors.t2.service.SessionService;
+import com.successfactors.t2.utils.Constants;
 import com.successfactors.t2.utils.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,19 +31,19 @@ public class WebSocketController {
     @SendTo("/topic/lottery")
     public Result draw(String userId) {
         if (StringUtils.isEmpty(userId)) {
-            return new Result(-1, "illegal_argument");
+            return new Result(-1, Constants.ILLEGAL_ARGUMENT);
         }
         Session session = sessionService.getSessionByOwner(userId);
         String today = DateUtil.formatDate(new Date());
         if (session != null && today.equals(session.getSessionDate())) {
             LotteryResult result = lotteryService.draw(userId, session.getSessionId());
             if (result != null && result.getLuckyNumber() > 0) {
-                return new Result(0, "ok", result);
+                return new Result(0, Constants.SUCCESS, result);
             } else {
-                return new Result(-1, "error");
+                return new Result(-1, Constants.ERROR);
             }
         }
-        return new Result(-1, "not_authorized");
+        return new Result(-1, Constants.NOT_AUTHORIZED);
     }
 
 }

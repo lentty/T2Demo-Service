@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class QuestionServiceImpl implements QuestionService {
 
@@ -19,5 +21,20 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public int editQuestion(Question question) {
         return questionDAO.editQuestion(question);
+    }
+
+    @Override
+    public List<Question> loadQuestions(Integer sessionId, Integer status) {
+        return questionDAO.loadQuestions(sessionId, status);
+    }
+
+    @Override
+    public int deleteQuestion(Integer sessionId, Integer questionId) {
+        return questionDAO.deleteQuestion(sessionId, questionId);
+    }
+
+    @Override
+    public int publish(Integer sessionId) {
+        return questionDAO.publish(sessionId);
     }
 }

@@ -3,6 +3,7 @@ package com.successfactors.t2.controller;
 import com.successfactors.t2.domain.Result;
 import com.successfactors.t2.domain.Session;
 import com.successfactors.t2.service.SessionService;
+import com.successfactors.t2.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,16 +26,16 @@ public class SessionController {
     public Result getSessionByDate(@PathVariable("date") String date){
         Session session = sessionService.getSessionByDate(date);
         if(session == null){
-            return new Result(0, "no_session");
+            return new Result(0, Constants.NOT_AUTHORIZED);
         }else{
-            return new Result(0, "ok", session);
+            return new Result(0, Constants.SUCCESS, session);
         }
     }
 
     @RequestMapping(value = "/usercount", method = RequestMethod.GET)
     public Result getNumOfAttendee(){
         Set<String> userList = sessionService.getAttendeeList();
-        return new Result(0, "ok", userList == null ? 0 : userList.size());
+        return new Result(0, Constants.SUCCESS, userList == null ? 0 : userList.size());
     }
 
 }

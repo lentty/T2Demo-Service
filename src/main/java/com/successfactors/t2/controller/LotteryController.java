@@ -1,10 +1,11 @@
 package com.successfactors.t2.controller;
 
-import com.successfactors.t2.domain.LotteryResult;
+
 import com.successfactors.t2.domain.Result;
 import com.successfactors.t2.domain.Session;
 import com.successfactors.t2.service.LotteryService;
 import com.successfactors.t2.service.SessionService;
+import com.successfactors.t2.utils.Constants;
 import com.successfactors.t2.utils.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,19 +34,19 @@ public class LotteryController {
     @RequestMapping(value = "/validate/{userId}", method = RequestMethod.GET)
     public Result isValidUser(@PathVariable("userId") String userId){
         if(StringUtils.isEmpty(userId)){
-            return new Result(-1, "illegal_argument", false);
+            return new Result(-1, Constants.ILLEGAL_ARGUMENT, false);
         }
         Set<String> userList = sessionService.getAttendeeList();
         if(userList != null && userList.contains(userId)){
-            return new Result(0, "ok", true);
+            return new Result(0, Constants.SUCCESS, true);
         }
-        return new Result(-1, "error", false);
+        return new Result(-1, Constants.ERROR, false);
     }
 
     @RequestMapping(value = "/bet/{userId}/{number}", method = RequestMethod.GET)
     public Result bet(@PathVariable("userId") String userId, @PathVariable("number") Integer number) {
         if (StringUtils.isEmpty(userId) || number == null) {
-            return new Result(-1, "illegal_argument");
+            return new Result(-1, Constants.ILLEGAL_ARGUMENT);
         }
         String today = DateUtil.formatDate(new Date());
         Session session = sessionService.getSessionByDate(today);
@@ -53,12 +54,12 @@ public class LotteryController {
             Set<String> userList = sessionService.getAttendeeList();
             if (userList.contains(userId)) {
                 int status = lotteryService.bet(userId, session.getSessionId(), number);
-                return new Result(status, "ok");
+                return new Result(status, Constants.SUCCESS);
             } else {
                 return new Result(-1, "not_checkin");
             }
         } else {
-            return new Result(-1, "no_session");
+            return new Result(-1, Constants.NOT_AUTHORIZED);
         }
     }
 
@@ -72,7 +73,7 @@ public class LotteryController {
 //        if (session != null && today.equals(session.getSessionDate())) {
 //            LotteryResult result = lotteryService.draw(userId, session.getSessionId());
 //            if (result != null && result.getLuckyNumber() > 0) {
-//                return new Result(0, "ok", result);
+//                return new Result(0, Constants.SUCCESS, result);
 //            } else {
 //                return new Result(-1, "error");
 //            }

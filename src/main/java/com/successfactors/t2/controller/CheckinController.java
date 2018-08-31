@@ -5,6 +5,7 @@ import com.successfactors.t2.domain.Session;
 import com.successfactors.t2.service.CheckinService;
 import com.successfactors.t2.service.RankingService;
 import com.successfactors.t2.service.SessionService;
+import com.successfactors.t2.utils.Constants;
 import com.successfactors.t2.utils.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,15 +42,15 @@ public class CheckinController {
             if (sessionService.isSessionOwnerOfToday(userId)) {
                 String code = checkinService.generateCheckinCode();
                 if (code != null) {
-                    return new Result(1, "ok", code);
+                    return new Result(1, Constants.SUCCESS, code);
                 } else {
                     return new Result(0, "no_code", null);
                 }
             } else {
-                return new Result(-1, "not_authorized", null);
+                return new Result(-1, Constants.NOT_AUTHORIZED, null);
             }
         }
-        return new Result(-1, "illegal_argument", null);
+        return new Result(-1, Constants.ILLEGAL_ARGUMENT, null);
     }
 
     @RequestMapping(value = "/confirm/{userId}/{code}", method = RequestMethod.GET)
@@ -67,15 +68,15 @@ public class CheckinController {
             if (session != null && today.equals(session.getSessionDate())) {
                 int status = checkinService.confirmCheckinCode(session.getSessionId(), code, userId);
                 if (status > 0) {
-                    return new Result(status, "ok", code);
+                    return new Result(status, Constants.SUCCESS, code);
                 } else {
                     return new Result(0, "no_update", null);
                 }
             } else {
-                return new Result(-1, "not_authorized", null);
+                return new Result(-1, Constants.NOT_AUTHORIZED, null);
             }
         }
-        return new Result(-1, "illegal_argument", null);
+        return new Result(-1, Constants.ILLEGAL_ARGUMENT, null);
     }
 
 
@@ -83,7 +84,7 @@ public class CheckinController {
     public Result checkin(@PathVariable("userId") String userId, @PathVariable("code") String code)
             throws UnsupportedEncodingException{
         if (StringUtils.isEmpty(userId) || StringUtils.isEmpty(code)) {
-            return new Result(-1, "illegal_argument", null);
+            return new Result(-1, Constants.ILLEGAL_ARGUMENT, null);
         }
         code = URLDecoder.decode(code, "UTF-8");
         logger.info("Code after decode: "+code);
@@ -95,12 +96,12 @@ public class CheckinController {
         if (session != null && !userId.equals(session.getOwner())) {
             if (code.equalsIgnoreCase(session.getCheckinCode())) {
                 int status = rankingService.updatePointsForCheckin(session.getSessionId(), userId);
-                return new Result(status, "ok", null);
+                return new Result(status, Constants.SUCCESS, null);
             } else {
                 return new Result(-1, "wrong_code", null);
             }
         }
-        return new Result(-1, "not_authorized", null);
+        return new Result(-1, Constants.NOT_AUTHORIZED, null);
     }
 
 
