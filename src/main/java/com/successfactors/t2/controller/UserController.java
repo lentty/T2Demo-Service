@@ -1,13 +1,17 @@
 package com.successfactors.t2.controller;
 
 import com.successfactors.t2.domain.Result;
+import com.successfactors.t2.domain.Session;
 import com.successfactors.t2.domain.User;
+import com.successfactors.t2.service.SessionService;
 import com.successfactors.t2.service.UserService;
 import com.successfactors.t2.utils.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/user")
@@ -17,6 +21,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SessionService sessionService;
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Result addUser(@RequestBody User user) {
@@ -28,4 +35,18 @@ public class UserController {
         int status = userService.addUser(user);
         return new Result(0, Constants.SUCCESS, status);
     }
+
+    @RequestMapping(value = "/login/{code}", method = RequestMethod.GET)
+    public Result getOpenId(@PathVariable("code") String code) {
+        if(StringUtils.isEmpty(code)){
+            return new Result(-1, Constants.ILLEGAL_ARGUMENT);
+        }
+        String openId = userService.getOpenId(code);
+        if(openId != null){
+            return new Result(0, Constants.SUCCESS, openId);
+        }
+        return new Result(-1, Constants.ERROR);
+    }
+
+
 }

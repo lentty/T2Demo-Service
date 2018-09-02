@@ -30,6 +30,7 @@ public class WebSocketController {
     @MessageMapping("/draw")
     @SendTo("/topic/lottery")
     public Result draw(String userId) {
+        logger.info("web socket draw: " + userId);
         if (StringUtils.isEmpty(userId)) {
             return new Result(-1, Constants.ILLEGAL_ARGUMENT);
         }
