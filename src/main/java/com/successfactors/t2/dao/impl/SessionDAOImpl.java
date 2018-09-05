@@ -2,6 +2,7 @@ package com.successfactors.t2.dao.impl;
 
 import com.successfactors.t2.dao.SessionDAO;
 import com.successfactors.t2.domain.Session;
+import com.successfactors.t2.domain.SessionVO;
 import com.successfactors.t2.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,6 +18,24 @@ import java.util.List;
 public class SessionDAOImpl implements SessionDAO{
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Override
+    public List<SessionVO> loadHistorySessions(){
+        String query = "select id, owner, date, season, episode from session where question_status = 1";
+        return jdbcTemplate.query(query, new RowMapper<SessionVO>() {
+            @Override
+            public SessionVO mapRow(ResultSet resultSet, int i) throws SQLException {
+                SessionVO session = new SessionVO();
+                session.setId(resultSet.getInt("id"));
+                session.setOwner(resultSet.getString("owner"));
+                session.setDate(resultSet.getString("date"));
+                String season = resultSet.getString("season");
+                String episode = resultSet.getString("episode");
+                session.setTitle(season + episode);
+                return session;
+            }
+        });
+    }
 
 
     @Override

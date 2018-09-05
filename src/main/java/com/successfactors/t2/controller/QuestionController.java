@@ -87,7 +87,11 @@ public class QuestionController {
             String today = DateUtil.formatDate(new Date());
             if (today.equals(session.getSessionDate())) {
                 int status = questionService.publish(session.getSessionId());
-                return new Result(status, Constants.SUCCESS);
+                if (status == -1) {
+                    return new Result(status, "published");
+                } else {
+                    return new Result(status, Constants.SUCCESS);
+                }
             } else {
                 return new Result(-1, "not_today");
             }

@@ -1,6 +1,7 @@
 package com.successfactors.t2.dao;
 
 import com.successfactors.t2.domain.Session;
+import com.successfactors.t2.domain.SessionVO;
 
 import java.util.List;
 
@@ -16,4 +17,6 @@ public interface SessionDAO {
     List<String> getAttendeeList();
 
     int updateLuckyNumber(Integer sessionId, Integer luckyNumber);
+
+    List<SessionVO> loadHistorySessions();
 }

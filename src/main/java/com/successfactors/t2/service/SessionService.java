@@ -1,9 +1,9 @@
 package com.successfactors.t2.service;
 
 import com.successfactors.t2.domain.Session;
+import com.successfactors.t2.domain.SessionVO;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public interface SessionService {
@@ -14,4 +14,5 @@ public interface SessionService {
     boolean isSessionOwnerOfToday(String userId);
     Set<String> getAttendeeList();
     int updateLuckyNumber(Integer sessionId, Integer luckyNumber);
+    List<SessionVO> loadHistorySessions();
 }

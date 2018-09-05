@@ -103,8 +103,15 @@ public class QuestionDAOImpl implements QuestionDAO {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public int publish(Integer sessionId) {
-        String updateSql = "update question set status = 1 where session_id = ? and status = 0";
-        return jdbcTemplate.update(updateSql, new Object[]{sessionId});
+        int questionStatus = getQuestionStatus(sessionId);
+        if(questionStatus == 1){
+            return -1;
+        }
+        String updateSessionSql = "update session set question_status = 1 where id = ?";
+        int status = jdbcTemplate.update(updateSessionSql, new Object[]{sessionId});
+        String updateQuestionSql = "update question set status = 1 where session_id = ?";
+        status += jdbcTemplate.update(updateQuestionSql, new Object[]{sessionId});
+        return status;
     }
 
     private int getQuestionCount(Integer sessionId) {
@@ -113,6 +120,16 @@ public class QuestionDAOImpl implements QuestionDAO {
                     @Override
                     public Integer mapRow(ResultSet resultSet, int i) throws SQLException {
                         return resultSet.getInt("cnt");
+                    }
+                });
+    }
+
+    private int getQuestionStatus(Integer sessionId) {
+        return jdbcTemplate.queryForObject("select question_status as status from session where id = ?",
+                new Object[]{sessionId}, new RowMapper<Integer>() {
+                    @Override
+                    public Integer mapRow(ResultSet resultSet, int i) throws SQLException {
+                        return resultSet.getInt("status");
                     }
                 });
     }

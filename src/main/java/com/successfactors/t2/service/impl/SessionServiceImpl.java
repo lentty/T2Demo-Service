@@ -2,6 +2,7 @@ package com.successfactors.t2.service.impl;
 
 import com.successfactors.t2.dao.SessionDAO;
 import com.successfactors.t2.domain.Session;
+import com.successfactors.t2.domain.SessionVO;
 import com.successfactors.t2.service.CacheService;
 import com.successfactors.t2.service.SessionService;
 import com.successfactors.t2.utils.DateUtil;
@@ -103,5 +104,10 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public int updateLuckyNumber(Integer sessionId, Integer luckyNumber) {
         return sessionDAO.updateLuckyNumber(sessionId, luckyNumber);
+    }
+
+    @Override
+    public List<SessionVO> loadHistorySessions() {
+        return sessionDAO.loadHistorySessions();
     }
 }
