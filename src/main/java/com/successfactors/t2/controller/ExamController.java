@@ -1,19 +1,19 @@
 package com.successfactors.t2.controller;
 
-import com.successfactors.t2.domain.Question;
-import com.successfactors.t2.domain.Result;
-import com.successfactors.t2.domain.SessionVO;
+import com.successfactors.t2.domain.*;
+import com.successfactors.t2.service.ExamService;
 import com.successfactors.t2.service.QuestionService;
 import com.successfactors.t2.service.SessionService;
 import com.successfactors.t2.utils.Constants;
+import com.successfactors.t2.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -25,6 +25,9 @@ public class ExamController {
 
     @Autowired
     private QuestionService questionService;
+
+    @Autowired
+    private ExamService examService;
 
     @RequestMapping(value = "/load/question/{sessionId}", method = RequestMethod.GET)
     public Result loadQuestionsBySession(@PathVariable("sessionId") Integer sessionId) {
@@ -39,6 +42,25 @@ public class ExamController {
     public Result loadHistorySessions() {
         List<SessionVO> sessions = sessionService.loadHistorySessions();
         return new Result(0, Constants.SUCCESS, sessions);
+    }
+
+    @RequestMapping(value = "/submit", method = RequestMethod.POST)
+    public Result submitAnswers(@RequestBody Answer answer) {
+        if (answer == null || StringUtils.isEmpty(answer.getUserId())
+                || CollectionUtils.isEmpty(answer.getAnswerMap())) {
+            return new Result(-1, Constants.ILLEGAL_ARGUMENT);
+        }
+        String today = DateUtil.formatDate(new Date());
+        Session session = sessionService.getSessionByDate(today);
+        if (session != null) {
+            Answer result = examService.submitAnswers(session.getSessionId(), answer);
+            if (result != null) {
+                return new Result(0, Constants.SUCCESS, result);
+            } else {
+                return new Result(-1, Constants.ERROR);
+            }
+        }
+        return new Result(-1, Constants.NOT_AUTHORIZED);
     }
 
 }

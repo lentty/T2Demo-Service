@@ -21,7 +21,8 @@ public class SessionDAOImpl implements SessionDAO{
 
     @Override
     public List<SessionVO> loadHistorySessions(){
-        String query = "select id, owner, date, season, episode from session where question_status = 1";
+        String query = "select id, owner, date, season, episode from session where question_status = 1" +
+                " order by date desc";
         return jdbcTemplate.query(query, new RowMapper<SessionVO>() {
             @Override
             public SessionVO mapRow(ResultSet resultSet, int i) throws SQLException {

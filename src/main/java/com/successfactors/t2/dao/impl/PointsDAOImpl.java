@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,6 +43,7 @@ public class PointsDAOImpl implements PointsDAO{
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public int updatePointsForHost(Integer sessionId, String userId) {
         int sessionCount = getSessionCount(sessionId, userId);
         if (sessionCount == 0) {
@@ -53,6 +56,7 @@ public class PointsDAOImpl implements PointsDAO{
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public int updatePointsForCheckin(Integer sessionId, String userId) {
         int sessionCount = getSessionCount(sessionId, userId);
         if (sessionCount == 0) {
@@ -65,10 +69,11 @@ public class PointsDAOImpl implements PointsDAO{
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public int updatePointsForLottery(Integer sessionId, Integer luckyNumber) {
         jdbcTemplate.update("update points set lottery = 0 where session_id = ? and bet_number != ?",
                 new Object[]{sessionId, luckyNumber});
-        return jdbcTemplate.update("update points set lottery = 5 where session_id = ? and bet_number = ?",
+        return jdbcTemplate.update("update points set lorettery = 5 where session_id = ? and bet_number = ?",
                 new Object[]{sessionId, luckyNumber});
     }
 
@@ -80,5 +85,18 @@ public class PointsDAOImpl implements PointsDAO{
                 return resultSet.getInt("cnt");
             }
         });
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public int updatePointsForExam(Integer sessionId, String userId, int points) {
+        int sessionCount = getSessionCount(sessionId, userId);
+        if (sessionCount == 0) {
+            return jdbcTemplate.update("insert into points(user_id, session_id, exam) values (?, ?, ?)",
+                    new Object[]{userId, sessionId, points});
+        } else {
+            String updateSql = "update points set exam = ? where session_id = ? and user_id = ?";
+            return jdbcTemplate.update(updateSql, new Object[]{points, sessionId, userId});
+        }
     }
 }

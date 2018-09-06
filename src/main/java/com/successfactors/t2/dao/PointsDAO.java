@@ -9,4 +9,5 @@ public interface PointsDAO {
     int updatePointsForHost(Integer sessionId, String userId);
     int updatePointsForCheckin(Integer sessionId, String userId);
     int updatePointsForLottery(Integer sessionId, Integer luckyNumber);
+    int updatePointsForExam(Integer sessionId, String userId, int points);
 }

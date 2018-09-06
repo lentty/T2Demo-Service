@@ -1,22 +1,26 @@
 package com.successfactors.t2.controller;
 
+import com.successfactors.t2.domain.Answer;
 import com.successfactors.t2.domain.Option;
 import com.successfactors.t2.domain.Question;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class QuestionControllerTest {
 
     public static void main(String... args){
         ObjectMapper mapper = new ObjectMapper();
-        Question question = constructQuestion();
+       // Question question = constructQuestion();
+        Answer answer = constructAnswer();
         try{
-            String jsonString = mapper.writeValueAsString(question);
+            String jsonString = mapper.writeValueAsString(answer);
             System.out.println(jsonString);
-            jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(question);
+            jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(answer);
             System.out.println(jsonString);
         }catch (IOException e){
             e.printStackTrace();
@@ -34,6 +38,17 @@ public class QuestionControllerTest {
         options.add(new Option("C", "delta", 0));
         question.setOptions(options);
         return question;
+    }
+
+    private static Answer constructAnswer(){
+        Answer answer = new Answer();
+        answer.setUserId("oCNCe4vsdC_dr0wv6uY7uus1GheA");
+        Map<Integer, String> selectedMap = new HashMap<>();
+        selectedMap.put(34, "A");
+        selectedMap.put(42, "A");
+        selectedMap.put(43, "A");
+        answer.setAnswerMap(selectedMap);
+        return answer;
     }
 
 }
