@@ -36,7 +36,7 @@ public class ExamServiceImpl implements ExamService{
         }
         if(points > 0){
             int status = pointsDAO.updatePointsForExam(sessionId, answer.getUserId(), points);
-            if(status <= 0){
+            if(status == -1){
                 return null;
             }
         }

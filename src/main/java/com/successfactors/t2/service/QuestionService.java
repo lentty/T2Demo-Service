@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface QuestionService {
     int editQuestion(Question question);
-    List<Question> loadQuestions(Integer sessionId, Integer status);
+    List<Question> loadQuestions(Integer sessionId, int status);
     int deleteQuestion(Integer sessionId, Integer questionId);
     int publish(Integer sessionId);
 }

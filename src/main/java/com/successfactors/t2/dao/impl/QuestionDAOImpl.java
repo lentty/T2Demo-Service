@@ -4,6 +4,7 @@ import com.successfactors.t2.dao.QuestionDAO;
 import com.successfactors.t2.domain.Option;
 import com.successfactors.t2.domain.Question;
 import com.successfactors.t2.utils.Constants;
+import com.successfactors.t2.utils.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 @Repository
 public class QuestionDAOImpl implements QuestionDAO {
@@ -50,13 +52,15 @@ public class QuestionDAOImpl implements QuestionDAO {
 
     @Override
     public List<Question> loadQuestions(Integer sessionId, Integer status) {
+        String today = DateUtil.formatDate(new Date());
         Map<Integer, Question> questionMap = new LinkedHashMap<>();
-        String query = "select q.id as qid, q.content as q_content, o.id as oid, o.number, o.content as o_content, o.is_answer " +
-                "from question q, `option` o where q.id = o.question_id and q.session_id = ? and q.status = ?  order by q.id, o.number";
+        String query = "select s.date, q.id as qid, q.content as q_content, o.id as oid, o.number, o.content as o_content, o.is_answer " +
+                "from session s, question q, `option` o where s.id = q.session_id and " +
+                "q.id = o.question_id and s.id = ? and s.question_status = ? order by q.id, o.number";
         jdbcTemplate.query(query, new Object[]{sessionId, status}, new RowMapper<Question>() {
-            @Nullable
             @Override
             public Question mapRow(ResultSet resultSet, int i) throws SQLException {
+                String sessionDate = resultSet.getString("date");
                 Integer questionId = resultSet.getInt("qid");
                 Question question = questionMap.get(questionId);
                 if (question == null) {
@@ -77,7 +81,7 @@ public class QuestionDAOImpl implements QuestionDAO {
                 option.setQuestionId(questionId);
                 option.setNumber(resultSet.getString("number"));
                 option.setContent(resultSet.getString("o_content"));
-                if(status == 0){
+                if(status == 0 || !today.equals(sessionDate)){
                     option.setIsAnswer(resultSet.getInt("is_answer"));
                 }
                 options.add(option);

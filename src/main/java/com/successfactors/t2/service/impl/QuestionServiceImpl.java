@@ -24,7 +24,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<Question> loadQuestions(Integer sessionId, Integer status) {
+    public List<Question> loadQuestions(Integer sessionId, int status) {
         return questionDAO.loadQuestions(sessionId, status);
     }
 

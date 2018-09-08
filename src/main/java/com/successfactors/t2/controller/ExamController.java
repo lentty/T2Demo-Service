@@ -53,14 +53,18 @@ public class ExamController {
         String today = DateUtil.formatDate(new Date());
         Session session = sessionService.getSessionByDate(today);
         if (session != null) {
-            Answer result = examService.submitAnswers(session.getSessionId(), answer);
-            if (result != null) {
-                return new Result(0, Constants.SUCCESS, result);
+            if (!session.getOwner().equals(answer.getUserId())) {
+                Answer result = examService.submitAnswers(session.getSessionId(), answer);
+                if (result != null) {
+                    return new Result(0, Constants.SUCCESS, result);
+                } else {
+                    return new Result(-1, "submitted");
+                }
             } else {
-                return new Result(-1, Constants.ERROR);
+                return new Result(-1, Constants.NOT_AUTHORIZED);
             }
         }
-        return new Result(-1, Constants.NOT_AUTHORIZED);
+        return new Result(-2, Constants.NOT_AUTHORIZED);
     }
 
 }
