@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 
 @RestController
@@ -54,17 +54,22 @@ public class ExamController {
         Session session = sessionService.getSessionByDate(today);
         if (session != null) {
             if (!session.getOwner().equals(answer.getUserId())) {
-                Answer result = examService.submitAnswers(session.getSessionId(), answer);
-                if (result != null) {
-                    return new Result(0, Constants.SUCCESS, result);
+                Set<String> attendList = sessionService.getAttendeeList();
+                if (attendList != null && attendList.contains(answer.getUserId())) {
+                    Answer result = examService.submitAnswers(session.getSessionId(), answer);
+                    if (result != null) {
+                        return new Result(0, Constants.SUCCESS, result);
+                    } else {
+                        return new Result(-1, "submitted");
+                    }
                 } else {
-                    return new Result(-1, "submitted");
+                    return new Result(-2, Constants.NOT_AUTHORIZED);
                 }
             } else {
                 return new Result(-1, Constants.NOT_AUTHORIZED);
             }
         }
-        return new Result(-2, Constants.NOT_AUTHORIZED);
+        return new Result(-3, Constants.NOT_AUTHORIZED);
     }
 
 }
