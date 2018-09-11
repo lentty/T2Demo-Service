@@ -9,6 +9,10 @@ public class DateUtil {
         return new SimpleDateFormat("yyyy-MM-dd").format(date);
     }
 
+    public static String formatDateTime(Date date){
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
+    }
+
     public static void main(String... args){
         String dateStr = formatDate(new Date());
         System.out.println(dateStr);
