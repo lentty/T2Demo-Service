@@ -41,21 +41,14 @@ public class UserServiceImpl implements UserService{
         return null;
     }
 
-    public static void main(String... agrs){
-        UserServiceImpl impl = new UserServiceImpl();
-        System.out.println(impl.getOpenId("0236lKXI1DDAw60hnjZI1d0wXI16lKXq"));
-    }
 
     @Override
     public int addUser(User user){
-        Set<String> userList = cacheService.getUserToSessionCache().keySet();
-        if (userList != null && userList.contains(user.getId())) {
-            user.setStatus(1);
-        } else {
-            user.setStatus(0);
-        }
-        userDAO.addUser(user);
-        return user.getStatus();
+        return userDAO.addUser(user);
     }
 
+    @Override
+    public User getUserById(String userId) {
+        return userDAO.getUserById(userId);
+    }
 }

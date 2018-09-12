@@ -23,7 +23,7 @@ public class PointsDAOImpl implements PointsDAO{
     @Override
     public List<RankingItem> getUserRankingList(String beginDate, String endDate){
         String query = "select a.id, a.nickname, a.avatarUrl, a.initial_points + ifnull(b.session_points, 0)  as total_points " +
-                  "from  (select id, nickname, avatarUrl, initial as initial_points from user where status = 1) a " +
+                  "from  (select id, nickname, avatarUrl, initial as initial_points from user where status != 0) a " +
                   "left outer join " +
                   "  (select p.user_id, sum(checkin)+sum(host)+sum(ifnull(exam,0))+sum(lottery) as session_points from points p, session s " +
                   " where p.session_id = s.id and s.season = 'S1' group by p.user_id) b " +

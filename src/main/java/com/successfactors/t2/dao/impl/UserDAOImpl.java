@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
@@ -33,5 +34,22 @@ public class UserDAOImpl implements UserDAO {
                     new Object[]{user.getNickName(), user.getGender(), user.getAvatarUrl(), id});
         }
         return -1;
+    }
+
+    @Override
+    public User getUserById(String userId) {
+        String query = "select status from user where id = ?";
+        List<User> users = jdbcTemplate.query(query, new Object[]{userId}, new RowMapper<User>() {
+            @Override
+            public User mapRow(ResultSet resultSet, int i) throws SQLException {
+                User user = new User();
+                user.setStatus(resultSet.getInt("status"));
+                return user;
+            }
+        });
+        if(users != null && !users.isEmpty()){
+            return users.get(0);
+        }
+        return null;
     }
 }

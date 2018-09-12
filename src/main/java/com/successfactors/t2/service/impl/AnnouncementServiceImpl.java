@@ -6,6 +6,8 @@ import com.successfactors.t2.service.AnnouncementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AnnouncementServiceImpl implements AnnouncementService{
 
@@ -15,5 +17,10 @@ public class AnnouncementServiceImpl implements AnnouncementService{
     @Override
     public int editAnnouncement(Announcement announcement) {
         return announcementDAO.editAnnouncement(announcement);
+    }
+
+    @Override
+    public List<Announcement> getAnnouncementList() {
+        return announcementDAO.getAnnouncementList();
     }
 }

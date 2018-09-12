@@ -7,9 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 @Repository
 public class AnnouncementDAOImpl implements AnnouncementDAO {
@@ -34,5 +38,21 @@ public class AnnouncementDAOImpl implements AnnouncementDAO {
             return jdbcTemplate.update(updateSql, new Object[]{announcement.getContent(), announcement.getLastModifiedBy(),
                     currentDate, announcement.getId()});
         }
+    }
+
+    @Override
+    public List<Announcement> getAnnouncementList() {
+        String query = "select id, content, last_modified_date from announcement order by " +
+                " last_modified_date desc";
+        return jdbcTemplate.query(query, new RowMapper<Announcement>() {
+            @Override
+            public Announcement mapRow(ResultSet resultSet, int i) throws SQLException {
+                Announcement announcement = new Announcement();
+                announcement.setId(resultSet.getInt("id"));
+                announcement.setContent(resultSet.getString("content"));
+                announcement.setLastModifiedDate(resultSet.getString("last_modified_date"));
+                return announcement;
+            }
+        });
     }
 }
