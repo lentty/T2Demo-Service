@@ -42,15 +42,18 @@ public class AnnouncementDAOImpl implements AnnouncementDAO {
 
     @Override
     public List<Announcement> getAnnouncementList() {
-        String query = "select id, content, last_modified_date from announcement order by " +
-                " last_modified_date desc";
+        String query = "select a.id as aid, content, u.nickname, last_modified_date from announcement a, user u " +
+                " where a.last_modified_by = u.id  order by last_modified_date desc";
         return jdbcTemplate.query(query, new RowMapper<Announcement>() {
             @Override
             public Announcement mapRow(ResultSet resultSet, int i) throws SQLException {
                 Announcement announcement = new Announcement();
-                announcement.setId(resultSet.getInt("id"));
+                announcement.setId(resultSet.getInt("aid"));
                 announcement.setContent(resultSet.getString("content"));
-                announcement.setLastModifiedDate(resultSet.getString("last_modified_date"));
+                announcement.setLastModifiedBy(resultSet.getString("nickname"));
+                String lastModifiedDate = resultSet.getString("last_modified_date");
+                int length = lastModifiedDate.length();
+                announcement.setLastModifiedDate(lastModifiedDate.substring(0, length - 2));
                 return announcement;
             }
         });

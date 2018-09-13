@@ -8,6 +8,7 @@ public class Points {
     private int host;
     private Integer exam;
     private int lottery;
+    private String date;
 
     public String getUserId() {
         return userId;
@@ -63,5 +64,13 @@ public class Points {
 
     public void setLottery(int lottery) {
         this.lottery = lottery;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

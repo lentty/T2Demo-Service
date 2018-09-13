@@ -44,6 +44,24 @@ public class PointsDAOImpl implements PointsDAO{
     }
 
     @Override
+    public List<Points> getPointsDetailForUser(String userId) {
+        String query = "select date, checkin, host, exam, lottery from points p, session s " +
+                "where p.session_id = s.id and p.user_id = ? order by date desc";
+        return jdbcTemplate.query(query, new Object[]{userId}, new RowMapper<Points>() {
+            @Override
+            public Points mapRow(ResultSet resultSet, int i) throws SQLException {
+               Points points = new Points();
+               points.setDate(resultSet.getString("date"));
+               points.setCheckin(resultSet.getInt("checkin"));
+               points.setHost(resultSet.getInt("host"));
+               points.setExam(resultSet.getInt("exam"));
+               points.setLottery(resultSet.getInt("lottery"));
+               return points;
+            }
+        });
+    }
+
+    @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public int updatePointsForHost(Integer sessionId, String userId) {
         int sessionCount = getSessionCount(sessionId, userId);

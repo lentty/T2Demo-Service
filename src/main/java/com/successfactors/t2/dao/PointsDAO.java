@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface PointsDAO {
     List<RankingItem> getUserRankingList(String beginDate, String endDate);
+    List<Points> getPointsDetailForUser(String userId);
     Points getPointsById(Integer sessionId, String userId);
     int updatePointsForHost(Integer sessionId, String userId);
     int updatePointsForCheckin(Integer sessionId, String userId);

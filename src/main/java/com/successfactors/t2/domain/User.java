@@ -9,6 +9,7 @@ public class User {
      * 0 means normal user, 1 means attendee
      */
     private int status;
+    private int initialPoints;
 
     public String getId() {
         return id;
@@ -48,5 +49,13 @@ public class User {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int getInitialPoints() {
+        return initialPoints;
+    }
+
+    public void setInitialPoints(int initialPoints) {
+        this.initialPoints = initialPoints;
     }
 }
