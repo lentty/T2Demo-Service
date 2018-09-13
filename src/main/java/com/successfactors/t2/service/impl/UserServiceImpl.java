@@ -9,6 +9,7 @@ import com.successfactors.t2.utils.WxMappingJackson2HttpMessageConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,10 +26,13 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private CacheService cacheService;
 
+    @Autowired
+    private Environment env;
+
     @Override
     public String getOpenId(String code) {
-        String appId = "";
-        String appSecrect = "";
+        String appId = env.getProperty("app.appId");
+        String appSecrect = env.getProperty("app.appSecrect");
         String apiPrefix = "https://api.weixin.qq.com/sns/jscode2session?";
         String url = apiPrefix + "appid=" + appId + "&secret=" + appSecrect + "&js_code=" + code + "&grant_type=authorization_code";
         logger.info("wechat api url: " + url);
