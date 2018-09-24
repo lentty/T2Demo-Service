@@ -40,10 +40,10 @@ public class SessionDAOImpl implements SessionDAO{
 
 
     @Override
-    public List<Session> getSessionList() {
+    public List<Session> getSessionList(String season) {
        String query = "select s.id, s.owner, s.date, u.nickname, u.avatarUrl, u.department from user u, session s where "+
-                " s.owner = u.id and s.season ='S1' order by s.date";
-        return jdbcTemplate.query(query, new RowMapper<Session>() {
+                " s.owner = u.id and s.season = ? order by s.date";
+        return jdbcTemplate.query(query, new Object[]{season}, new RowMapper<Session>() {
             @Override
             public Session mapRow(ResultSet resultSet, int i) throws SQLException {
                 Session session = new Session();
@@ -71,8 +71,9 @@ public class SessionDAOImpl implements SessionDAO{
 
     @Override
     public Session getSessionByOwner(String userId){
-        String query = "select id, owner, date, checkin_code from session where season = 'S1' and owner = ?";
-        List<Session> sessions = jdbcTemplate.query(query, new Object[]{userId}, new SessionRowMapper());
+        String season = getCurrentSeason();
+        String query = "select id, owner, date, checkin_code from session where season = ? and owner = ?";
+        List<Session> sessions = jdbcTemplate.query(query, new Object[]{season, userId}, new SessionRowMapper());
         if (sessions != null && !sessions.isEmpty()){
             return sessions.get(0);
         }else {
@@ -101,6 +102,23 @@ public class SessionDAOImpl implements SessionDAO{
     @Override
     public int updateLuckyNumber(Integer sessionId, Integer luckyNumber) {
         return jdbcTemplate.update("update session set lucky_number = ? where id = ?", new Object[]{luckyNumber, sessionId});
+    }
+
+    @Override
+    public String getCurrentSeason() {
+        String today = DateUtil.formatDate(new Date());
+        String query = "select season from session group by season having min(date) <= ? and max(date) >= ?";
+        List<String> seasonList = jdbcTemplate.query(query, new Object[]{today, today}, new RowMapper<String>() {
+            @Override
+            public String mapRow(ResultSet resultSet, int i) throws SQLException {
+                return resultSet.getString("season");
+            }
+        });
+        if (seasonList == null || seasonList.isEmpty()) {
+            return "S1";
+        } else {
+            return seasonList.get(0);
+        }
     }
 
     class SessionRowMapper implements RowMapper<Session> {

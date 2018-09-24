@@ -15,8 +15,8 @@ public class RankingServiceImpl implements RankingService{
     private PointsDAO pointsDAO;
 
     @Override
-    public List<RankingItem> getRankingListByPeriod(String beginDate, String endDate){
-         return pointsDAO.getUserRankingList(beginDate, endDate);
+    public List<RankingItem> getRankingListBySeason(String season){
+         return pointsDAO.getUserRankingList(season);
     }
 
     @Override

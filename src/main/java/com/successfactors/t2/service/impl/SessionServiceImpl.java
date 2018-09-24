@@ -27,7 +27,8 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public List<Session> getSessionList() {
        // List<Session> sessionList = (List<Session>) cacheService.getSessionCache().values();
-        List<Session> sessionList = sessionDAO.getSessionList();
+        String season = getCurrentSeason();
+        List<Session> sessionList = sessionDAO.getSessionList(season);
         if(sessionList == null || sessionList.isEmpty()){
             return sessionList;
         }
@@ -109,5 +110,10 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public List<SessionVO> loadHistorySessions() {
         return sessionDAO.loadHistorySessions();
+    }
+
+    @Override
+    public String getCurrentSeason() {
+        return sessionDAO.getCurrentSeason();
     }
 }

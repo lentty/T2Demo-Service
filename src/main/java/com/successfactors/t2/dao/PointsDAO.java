@@ -6,7 +6,7 @@ import com.successfactors.t2.domain.RankingItem;
 import java.util.List;
 
 public interface PointsDAO {
-    List<RankingItem> getUserRankingList(String beginDate, String endDate);
+    List<RankingItem> getUserRankingList(String season);
     List<Points> getPointsDetailForUser(String userId);
     Points getPointsById(Integer sessionId, String userId);
     int updatePointsForHost(Integer sessionId, String userId);

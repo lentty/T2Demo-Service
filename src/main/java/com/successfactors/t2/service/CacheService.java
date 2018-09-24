@@ -36,7 +36,8 @@ public class CacheService {
     private void initializeSessionCache() {
         try {
             logger.info("Start to load data to session cache...");
-            List<Session> sessionList = sessionDAO.getSessionList();
+            String season = sessionDAO.getCurrentSeason();
+            List<Session> sessionList = sessionDAO.getSessionList(season);
             if (sessionList != null && !sessionList.isEmpty()) {
                 for (Session session : sessionList) {
                     userToSessionCache.put(session.getOwner(), session);

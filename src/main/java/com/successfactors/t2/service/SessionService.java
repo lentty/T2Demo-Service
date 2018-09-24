@@ -15,4 +15,5 @@ public interface SessionService {
     Set<String> getAttendeeList();
     int updateLuckyNumber(Integer sessionId, Integer luckyNumber);
     List<SessionVO> loadHistorySessions();
+    String getCurrentSeason();
 }

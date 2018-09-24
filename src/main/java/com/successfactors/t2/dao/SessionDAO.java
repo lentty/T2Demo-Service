@@ -6,7 +6,7 @@ import com.successfactors.t2.domain.SessionVO;
 import java.util.List;
 
 public interface SessionDAO {
-    List<Session> getSessionList();
+    List<Session> getSessionList(String season);
 
     Session getSessionByDate(String date);
 
@@ -19,4 +19,6 @@ public interface SessionDAO {
     int updateLuckyNumber(Integer sessionId, Integer luckyNumber);
 
     List<SessionVO> loadHistorySessions();
+
+    String getCurrentSeason();
 }

@@ -5,9 +5,11 @@ import com.successfactors.t2.domain.RankingItem;
 import com.successfactors.t2.domain.Result;
 import com.successfactors.t2.domain.User;
 import com.successfactors.t2.service.RankingService;
+import com.successfactors.t2.service.SessionService;
 import com.successfactors.t2.service.UserService;
 import com.successfactors.t2.utils.Constants;
-import com.successfactors.t2.utils.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,12 +17,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
 @RequestMapping("/ranking")
 public class RankingController {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private SessionService sessionService;
+
     @Autowired
     private RankingService rankingService;
 
@@ -29,9 +36,9 @@ public class RankingController {
 
     @RequestMapping(value="/list", method = RequestMethod.GET)
     public List<RankingItem> getRankingList(){
-        String beginDate = "2018-07-31";
-        String endDate = DateUtil.formatDate(new Date());
-        return rankingService.getRankingListByPeriod(beginDate, endDate);
+        String season = sessionService.getCurrentSeason();
+        logger.info("Current season: " + season);
+        return rankingService.getRankingListBySeason(season);
     }
 
     @RequestMapping(value="/points/{userId}", method = RequestMethod.GET)
