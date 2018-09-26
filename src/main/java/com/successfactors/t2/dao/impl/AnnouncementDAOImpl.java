@@ -2,6 +2,7 @@ package com.successfactors.t2.dao.impl;
 
 import com.successfactors.t2.dao.AnnouncementDAO;
 import com.successfactors.t2.domain.Announcement;
+import com.successfactors.t2.utils.Base64Util;
 import com.successfactors.t2.utils.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +50,7 @@ public class AnnouncementDAOImpl implements AnnouncementDAO {
             public Announcement mapRow(ResultSet resultSet, int i) throws SQLException {
                 Announcement announcement = new Announcement();
                 announcement.setId(resultSet.getInt("aid"));
-                announcement.setContent(resultSet.getString("content"));
+                announcement.setContent(Base64Util.decode(resultSet.getString("content")));
                 announcement.setLastModifiedBy(resultSet.getString("nickname"));
                 String lastModifiedDate = resultSet.getString("last_modified_date");
                 int length = lastModifiedDate.length();
